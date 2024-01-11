@@ -1,0 +1,19 @@
+<div class="header-controle">
+    <a class="nav-link" routerLink="/controle/ordens" routerLinkActive="active" tooltip="Ordens" placement="bottom"><i class='bx bx-detail'></i></a>
+    <a class="nav-link" routerLink="/controle/expediente" routerLinkActive="active" tooltip="Expediente" placement="bottom"><i class='bx bx-microphone'></i></a>
+    <a class="nav-link" routerLink="/controle/presidente" routerLinkActive="active" tooltip="Presidente" placement="bottom"><i class='bx bx-user-pin' ></i></a>
+    <a class="nav-link" routerLink="/controle/configuracoes" routerLinkActive="active" tooltip="Configurações" placement="bottom"><i class='bx bx-cog'></i></a>
+</div>
+<div class="current-route">
+    <div class="wrap-route">
+        <i class='bx {{icon}}'></i> 
+        {{currentRoute}}
+    </div>
+    
+
+    <button type="button" class="btn btn-logout" (click)="logout()">
+        <i class='bx bx-log-out'></i>
+        <span>Sair</span>
+    </button>
+</div>
+<router-outlet></router-outlet>

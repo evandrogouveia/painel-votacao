@@ -1,0 +1,196 @@
+<div class="container-painel">
+    <section *ngIf="standbyPainel" class="section-standby">
+       <div class="header-item">
+           <div class="header-left">
+               <p>{{(currentDate | date: 'fullDate')}}</p>
+           </div>
+           <div class="header-right">
+               <p>{{currentTime}}</p>
+           </div>
+           
+       </div>
+       <div class="content-background">
+           <img *ngIf="!(dados$ | async) || (dados$ | async)?.status == 'inscricao_encerrada'" class="logo" src="assets/imgs/logo-alta.jpg" alt="logo">
+       </div>
+     
+       <!--p class="emptyData" *ngIf="dadosCamara.length === 0">Carregando dados...</p-->
+   </section>
+  
+   <section *ngIf="(dados$ | async)?.status === 'leitura'" class="section-leitura-materias">
+       <div class="header-item">
+           {{(dados$ | async)?.dados[0].matterType}} - {{(dados$ | async)?.dados[0].matterNumber}} / {{(dados$ | async)?.dados[0].matterExercise}}
+       </div>
+       <div class="nomes">
+           <ng-container *ngFor="let m of (dados$ | async)?.dados">
+               <p *ngFor="let n of m.origin">{{n.name}} <span>|</span></p>  
+           </ng-container>
+       </div>
+       <div class="materia">
+           {{(dados$ | async)?.dados[0].matterDescription}}
+       </div>
+
+       <div class="bottom-info">
+           <p>LEITURA EM ANDAMENTO</p>
+       </div>
+   </section>
+
+   <!--section *ngIf="(dados$ | async)?.status === 'votacao' || (dados$ | async)?.status === 'votacao_secreta'" class="section-votacao-materias">
+       <div class="header-item">
+           <div class="items-left">
+               <span *ngIf="(dados$ | async)?.votacaoEmBloco === true; else votacaoNormal">
+                   Votação em Bloco - 
+                   <ng-container *ngFor="let d of (dados$ | async)?.dados | slice:0:2">
+                       {{d.matterType}} - {{d.matterNumber}} / {{d.matterExercise}} | 
+                   </ng-container> ...
+               </span>
+               <ng-template #tituloNormal>
+                   {{(dados$ | async)?.dados[0].matterType}} / {{(dados$ | async)?.dados[0].matterExercise}} - 
+                   {{(dados$ | async)?.dados[0].matterDescription}} 
+               </ng-template>
+           </div>
+           <div class="items-right">
+               <div class="qtd qtd-sim">
+                   <i *ngIf="(dados$ | async)?.status === 'votacao_secreta'" class='bx bxs-lock'></i>
+                   <ng-container *ngIf="(dados$ | async)?.status === 'votacao'">{{qtdSim}}</ng-container>
+               </div>
+               <div class="qtd qtd-abs">
+                   <i *ngIf="(dados$ | async)?.status === 'votacao_secreta'" class='bx bxs-lock'></i>
+                   <ng-container *ngIf="(dados$ | async)?.status === 'votacao'">{{qtdAbs}}</ng-container>
+               </div>
+               <div class="qtd qtd-nao">
+                   <i *ngIf="(dados$ | async)?.status === 'votacao_secreta'" class='bx bxs-lock'></i>
+                   <ng-container *ngIf="(dados$ | async)?.status === 'votacao'">{{qtdNao}}</ng-container>
+               </div>
+           </div>
+           
+       </div>
+       <div class="wrap-agent">
+           <ng-container *ngFor="let m of (dados$ | async)?.dados | slice:0:1">
+               <div class="card-agent" *ngFor="let n of m.agentVotation" 
+               [ngClass]="{
+                   'card-green': n.status === 'sim', 
+                   'card-blue' : n.status === 'abs', 
+                   'card-red' : n.status === 'nao',
+                   'card-yellow' : (n.status === 'sim' || n.status === 'abs' || n.status === 'nao') && (dados$ | async)?.status === 'votacao_secreta'
+               }">
+                   <img [src]="n.foto">
+                   <div class="texts">
+                       <p>{{n.agente}} {{n.cargo === 'Presidente' ? '('+ n.cargo + ')' : ''}}</p>
+                       <p>{{n.partido}}</p>
+                   </div>
+               </div>
+           </ng-container>
+       </div>
+       <div class="bottom-info">
+           <p>{{(dados$ | async)?.status === 'votacao_secreta' ? 'VOTAÇÃO SECRETA EM ANDAMENTO' : 'VOTAÇÃO EM ANDAMENTO'}}</p>
+       </div>
+   </section-->
+
+   <section *ngIf="(dados$ | async)?.status === 'votacao_parada'" class="section-votacao-materias">
+       <div class="header-item">
+           <div class="items-left">
+               {{(dados$ | async)?.dados[0].matterType}} / {{(dados$ | async)?.dados[0].matterExercise}} - 
+               {{(dados$ | async)?.dados[0].matterDescription}} 
+           </div>
+           <div class="items-right">
+               <div class="qtd qtd-sim">{{qtdSim}}</div>
+               <div class="qtd qtd-abs">{{qtdAbs}}</div>
+               <div class="qtd qtd-nao">{{qtdNao}}</div>
+           </div>
+           
+       </div>
+       <div class="wrap-qtds">
+           <div class="text-qtd">
+               <p class="sim">A Favor</p>
+               <div class="qtd qtd-sim">{{qtdSim}}</div>
+           </div>
+           <div class="text-qtd">
+               <p class="abs">Abstenção</p>
+               <div class="qtd qtd-abs">{{qtdAbs}}</div>
+           </div>
+           <div class="text-qtd">
+               <p class="nao">Contra</p>
+               <div class="qtd qtd-nao">{{qtdNao}}</div>
+           </div>
+         
+       </div>
+       <div class="bottom-info close-votation">
+           <p>VOTAÇÃO ENCERRADA</p>
+       </div>
+   </section>
+
+   <section 
+       *ngIf="(dados$ | async) && (dados$ | async)?.status === 'inscricao' || 
+              (dados$ | async)?.status === 'inscricao_parada'" class="section-standby">
+
+       <div class="content-background timer">
+           <span>  
+               <ng-container *ngIf="(dados$ | async)?.timer">Inscrição</ng-container> 
+               <ng-container *ngIf="(dados$ | async)?.status === 'inscricao_parada' || (dados$ | async)?.timer"> Expediente </ng-container>
+           </span>
+           <ng-container *ngIf="(dados$ | async)?.timer">
+               <app-global-timer></app-global-timer>
+           </ng-container>
+      
+           <div class="wrap-agent" *ngIf="(dados$ | async)?.status === 'inscricao' || 
+           (dados$ | async)?.status === 'inscricao_parada' && (dados$ | async)?.timerAgent !== true">
+           <ng-container *ngFor="let n of (dados$ | async)?.agents">
+               <div class="card-agent" *ngIf="(dados$ | async)?.agentsIdAlreadyTalked?.indexOf(n.ID) === -1">
+                   <img [src]="n.photo">
+                   <div class="texts">
+                       <p>{{n.name}} {{n.role === 'Presidente' ? '('+ n.role + ')' : ''}}</p>
+                       <p>{{n.party.party}}</p>
+                   </div>
+               </div>
+           </ng-container>
+           </div>
+
+           <div class="wrap-agent agent-speaking" *ngIf="(dados$ | async)?.status === 'inscricao_parada' && (dados$ | async)?.timerAgent === true">
+               <ng-container *ngFor="let n of (dados$ | async)?.agents">
+                   <div class="card-agent" *ngIf="(dados$ | async)?.agentIdCurrentTime === n.ID">
+                           <div class="data-left-agent">
+                               <img [src]="n.photo">
+                               <div class="texts">
+                                   <p>{{n.name}} {{n.role === 'Presidente' ? '('+ n.role + ')' : ''}}</p>
+                                   <p>{{n.party.party}}</p>
+                               </div>
+                           </div>
+                           <div class="data-right-timer" [ngClass]="(dados$ | async)?.startNegative == true ? 'red' : 'green'">
+                               <app-global-timer></app-global-timer>
+                           </div>
+                   </div>
+               </ng-container>
+               
+           </div>
+       </div>
+   </section>
+
+   <section *ngIf="(dados$ | async)?.status === 'quorum_iniciado' && (statusModal$ | async)?.status === true" class="section-standby">
+       <div class="header-item">
+           <div class="header-left">
+               <p>{{(currentDate | date: 'fullDate')}}</p>
+               <p>{{dadosCamara[0]?.name}} - {{dadosCamara[0]?.address.uf}}</p>
+           </div>
+           <div class="header-right">
+               <p>{{currentTime}}</p>
+           </div>
+           
+       </div>
+
+       <div class="content-background timer presenca">
+           <span>Presença dos Parlamentares</span>
+      
+           <div class="wrap-agent">
+           <ng-container *ngFor="let n of (dados$ | async)?.agents">
+               <div class="card-agent" [ngClass]="{'green' : n.status === 'presente', 'yellow' : n.status === 'ausencia_justificada' }" >
+                   <img [src]="n.foto">
+                   <div class="texts">
+                       <p>{{n.agente}} {{n.cargo === 'Presidente' ? '('+ n.cargo + ')' : ''}}</p>
+                       <p>{{n.partido}}</p>
+                   </div>
+               </div>
+           </ng-container>
+           </div>
+       </div>
+   </section>
+</div>

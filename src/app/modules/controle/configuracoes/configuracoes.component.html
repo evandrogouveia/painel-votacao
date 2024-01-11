@@ -1,0 +1,100 @@
+<section>
+    <div class="content-backoffice">
+
+        <form class="form" [formGroup]="addEditConfiguracoesForm">
+            <tabset>
+                <tab>
+                    <ng-template tabHeading>
+                        Voz
+                    </ng-template>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="box-label">
+                                <h5>Tempos</h5>
+                                <div class="d-flex-principals">
+                                    <div class="wrap-fields">
+                                        <div class="form-group mt-1">
+                                            <label for="minuto">Adicionar Minutos: </label>
+                                            <input type="text" class="form-control" id="minuto" name="minuto"
+                                                [(ngModel)]="minuto" [ngModelOptions]="{standalone: true}" mask="000">
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn btn-green" (click)="addTime()"><i class='bx bx-plus'></i></button>
+                                </div>
+
+                                <div class="wrap-timers">
+                                    <ul class="list-group">
+                                        <li class="list-group-item" *ngFor="let t of timers; let i = index">
+                                            {{t.value}}
+                                            <button type="button" class="btn btn-red" (click)="removeTime(i)">
+                                                <i class='bx bxs-trash-alt'></i>
+                                            </button>
+                                            
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </tab>
+                <tab>
+                    <ng-template tabHeading>
+                        Inscrições
+                    </ng-template>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="box-label">
+                                <h5>Tempo total repartido na inscrição: Minutos</h5>
+                                <div class="d-flex-principals">
+                                    <div class="wrap-fields">
+                                        <div class="form-group mt-1">
+                                            <label for="minuto">Adicionar Tempo: </label>
+                                            <input type="text" class="form-control" id="minuto" name="minuto"
+                                               formControlName="tempoTotal" mask="000">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </tab>
+                <tab>
+                    <ng-template tabHeading>
+                        Votação
+                    </ng-template>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="box-label">
+                                <h5>Opções</h5>
+                                <div class="d-flex-principals">
+                                    <div class="wrap-fields">
+                                        <div class="wrap-item">
+                                            <input type="checkbox" name="votacao" formControlName="votacaoEmBloco">
+                                            <label>Votação em bloco</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex-principals mt-3">
+                                    <div class="wrap-fields">
+                                        <div class="wrap-item">
+                                            <input type="checkbox" name="votacao" formControlName="votacaoSecreta">
+                                            <label>Votação secreta</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </tab>
+            </tabset>
+
+            <button type="button" class="btn btn-primary" (click)="addUpdateConfiguracoes()">Salvar</button>
+        </form>
+    </div>
+</section>

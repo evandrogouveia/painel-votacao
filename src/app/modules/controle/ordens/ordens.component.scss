@@ -1,0 +1,91 @@
+.card{
+    border-radius: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0px 4px 12px -2px rgba(0, 0, 0, 0.2);
+    .card-header{
+        background: #e1ecfa;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+       
+        p{
+            margin: 0;
+            color: var(--bg-primary-color);
+            font-weight: 500;
+            width: 85%;
+        }
+    }
+    .card-body{
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        p{
+            background-color: #4f5357;
+            padding: 5px 20px;
+            border-radius: 6px;
+            font-weight: 500;
+            width: 215px;
+            text-align: center;
+            color: #ffffff;
+            margin: 0;
+            &:nth-child(1) {
+                background-color: #0191d4;
+                
+            }
+        }
+        .btn-primary{
+            background-color: rgb(4, 153, 78);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 140px;
+            height: 34.5px;
+            border-radius: 6px;
+            i{
+                font-size: 25px;
+                width: 18px;
+            }
+            &:hover{
+                background-color: rgb(8, 192, 100);
+            }
+            
+        }
+
+        .btn-quorum{
+            position: relative;
+            background-color: #4649e5;
+            color: #ffffff;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 140px;
+            height: 34.5px;
+            border-radius: 6px;
+            gap: 5px;
+            i{
+                font-size: 22px;
+                width: 24px;
+                &.bxs-caret-right-circle{
+                    font-size: 25px;
+                    position: absolute;
+                    color: #e54646;
+                    right: -8px;
+                    top: -7px;
+                }
+            }
+            &:hover{
+                background-color: #3234bd;
+            }
+            &:focus, &:active{
+                border: none;
+                outline: none;
+                box-shadow: none;
+            }
+            
+        }
+    }
+}

@@ -1,0 +1,97 @@
+<div class="container-ordens">
+    <div class="row">
+        <div class="col-lg-12">
+            <ng-container *ngIf="session.length > 0">
+                <h1>Sessão {{session[0]?.typeSession}} - {{session[0]?.number}}/{{session[0]?.exercise}}</h1>
+                <div class="card" *ngFor="let m of materias; let i = index">
+                    <div class="card-header">
+                        <p>{{m.matterType}}: {{m.matterNumber}}/{{m.matterExercise}}</p>
+                        <div class="wrap-results-votation" *ngIf="exibeResultados[m.ID]">
+                            <div class="result">
+                               
+                                <i class='bx bxs-like' ></i>
+                                {{qtdSim[m.ID]}}
+                            </div>
+                            <div class="result">
+                                <i class='bx bxs-circle'></i>
+                                {{qtdAbs[m.ID]}}
+                            </div>
+                            <div class="result">
+                                <i class='bx bxs-dislike' ></i>
+                                {{qtdNao[m.ID]}}
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="card-body">
+                        <p>{{m.matterDescription}}</p>
+
+                        <div class="wrap-agents">
+                            <div class="agent" *ngFor="let a of m.agentVotation">
+                                <img [src]="a.foto">
+                                <p>{{a.agente}} ({{a.partido}})</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <ng-container *ngIf="(!showBtnVotacaoEmBloco && (dados$ | async)?.votacaoEmBloco === false) || (!(dados$ | async) && !showBtnVotacaoEmBloco)">
+                            <button  type="button" class="btn btn-iniciar-leitura" [ngClass]="{'red' : leituraIniciada[m.ID]}" (click)="iniciarLeituraMateria(m.ID)"  [disabled]="btnEncerrar[m.ID]">
+                                <i class="{{leituraIniciada[m.ID] ? 'bx bxs-no-entry' : 'bx bxs-book-reader'}}"></i> 
+                                {{ leituraIniciada[m.ID] ? 'Encerrar Leitura' : 'Iniciar Leitura'}}
+                            </button>
+                            <button class="btn btn-votacao" (click)="iniciarVotacaoMateria(m.ID)" [disabled]="leituraIniciada[m.ID] || btnEncerrar[m.ID]">
+                                <i class='bx bxs-hand-up'></i> 
+                                {{ btnEncerrar[m.ID] ? 'Em Votação' : 'Iniciar Votação'}}
+                            </button>
+                            <button *ngIf="btnEncerrar[m.ID]" class="btn btn-votacao red" (click)="encerrarVotacaoMateria(m.ID)">
+                                <i class='bx bxs-x-circle'></i> 
+                                Encerrar
+                            </button>
+                            <button *ngIf="btnParar[m.ID]" class="btn btn-votacao blue" (click)="stopVotacao(m.ID)">
+                                <i class='bx bxs-hand'></i> 
+                                Parar Votação
+                            </button>
+                            <button *ngIf="votacaoSecreta" class="btn btn-votacao-secreta" (click)="votacaoSecretaMateria(m.ID)" [disabled]="leituraIniciada[m.ID] || btnEncerrar[m.ID]">
+                                <i class='bx bxs-lock'></i> 
+                                {{ btnEncerrar[m.ID] ? 'Em Votação' : 'Iniciar Votação Secreta'}}
+                            </button>
+                        </ng-container>
+                       
+                        <button *ngIf="!showBtnVotacaoEmBloco" class="btn btn-votacao-bloco" (click)="showVotacaoEmBloco()" [disabled]="leituraIniciada[m.ID] || btnEncerrar[m.ID]">
+                            <i class='bx bx-grid-alt'></i>
+                           Votação em Bloco
+                        </button>
+                        <button *ngIf="(votacaoEmBloco && showBtnVotacaoEmBloco) || (dados$ | async)?.votacaoEmBloco === true" class="btn btn-votacao-bloco" 
+                        (click)="changeVotacaoEmBloco(m.ID)" [disabled]="leituraIniciada[m.ID] || btnEncerrar[m.ID] || (dados$ | async)?.votacaoEmBloco === true">
+                            <i *ngIf="!changeBtnVotacaoEmBloco[m.ID] && (dados$ | async)?.votacaoEmBloco === false" class='bx bx-grid-alt'></i>
+                            <i *ngIf="changeBtnVotacaoEmBloco[m.ID] || (dados$ | async)?.votacaoEmBloco === true" class='bx bxs-check-circle'></i>
+                           Adicionar na votação
+                        </button>
+                    </div>
+                </div>
+            </ng-container>
+          
+        </div>
+    </div>
+
+    <ng-container *ngIf="arrayBlocosMaterias.length > 0 || (dados$ | async)?.votacaoEmBloco === true && btnEncerrarVotacaoEmBloco">
+        <div *ngIf="arrayBlocosMaterias.length > 0 || (dados$ | async)?.status === 'votacao' || (dados$ | async)?.status === 'votacao_parada'" class="botoes-votacao-bloco">
+            <button *ngIf="!btnIniciarVotacaoEmBloco && (dados$ | async)?.status === 'votacao_encerrada' || (!btnIniciarVotacaoEmBloco && !(dados$ | async))" 
+            class="btn btn-votacao" (click)="iniciarVotacaoEmBloco()">
+                <i class='bx bxs-hand-up'></i> 
+                Iniciar Votação Em Bloco ({{arrayBlocosMaterias.length}})
+            </button>
+            <button *ngIf="btnEncerrarVotacaoEmBloco || ((dados$ | async)?.votacaoEmBloco === true && (dados$ | async)?.status === 'votacao') || (dados$ | async)?.status === 'votacao_parada'"  
+            class="btn btn-votacao red" (click)="encerrarVotacaoEmBloco()">
+                <i class='bx bxs-x-circle'></i> 
+                Encerrar
+            </button>
+            <button *ngIf="btnPararVotacaoEmBloco || ((dados$ | async)?.votacaoEmBloco === true && (dados$ | async)?.status === 'votacao')" class="btn btn-votacao blue" (click)=" stopVotacaoEmBloco()">
+                <i class='bx bxs-hand'></i> 
+                Parar Votação
+            </button>
+        </div>
+    </ng-container>
+    
+</div>
+

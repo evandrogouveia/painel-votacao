@@ -1,0 +1,4 @@
+<div class="wrap-timer" [ngClass]="{'red': (type$ | async)?.type === 'minus'}">
+    <span *ngIf="(type$ | async)?.type === 'minus'">-</span> 
+    <span id="minutes">{{(minutos$ | async) ? (minutos$ | async) : '00'}}</span>:<span id="seconds">{{(segundos$ | async) ? (segundos$ | async) : '00'}}</span>
+</div>

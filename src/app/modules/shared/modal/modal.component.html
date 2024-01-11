@@ -1,0 +1,23 @@
+<div class="content-modal">
+    <i class='bx bx-x close' (click)="closeModal()"></i>
+    <div class="modal-new-schedule">
+        <div class="mdl-header">
+            <div class="text-icon">
+                <i class='{{data.iconModal}}'></i>
+                <p>{{data.titleModal}}</p>
+            </div>
+        </div>
+        <div class="mdl-body">
+            <!-- ================= QUORUM ================== -->
+            <!--div *ngIf="data.modalType === 'QUORUM'" class="content-register">
+                <app-quorum [data]="data"></app-quorum>
+            </div-->
+
+            <!-- ================= CONVIDADO ================== -->
+            <div *ngIf="data.modalType === 'ADD_CONVIDADO'" class="content-register">
+                <app-form-add-convidado></app-form-add-convidado>
+            </div>
+
+        </div>
+    </div>
+</div>

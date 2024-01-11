@@ -1,0 +1,74 @@
+<div class="container-expediente">
+    <div class="header-buttons">
+        <button *ngIf="!inscricaoParada" class="btn btn-primary" (click)="startStopTimeVereadores()" [disabled]="initTimeBancadas">
+           {{initTimeVereadores ? 'Parar Inscrição' : 'Iniciar Inscrição de Vereadores'}} 
+        </button>
+        <button *ngIf="initTimeVereadores || initTimeBancadas" class="btn btn-count">
+            <app-global-timer></app-global-timer>
+        </button>
+        <button *ngIf="inscricaoParada" class="btn btn-encerrar" (click)="encerrar()">
+            Encerrar
+        </button>
+        <!--button *ngIf="!inscricaoParada" class="btn btn-primary" (click)="startStopTimeBancadas()" [disabled]="initTimeVereadores">
+            {{initTimeBancadas ? 'Parar Inscrição' : 'Iniciar Inscrição de Bancadas'}} 
+        </button-->
+        <button *ngIf="!inscricaoParada" class="btn btn-primary" (click)="InscreverTodos()" [disabled]="initTimeVereadores">
+            Inscrever Todos os Vereadores
+        </button>
+    </div>
+
+    <div *ngIf="(dados$ | async)?.agents.length > 0" class="wrap-inscritos">
+        <p>Inscritos</p>
+        <button type="button" class="btn add-convidado" tooltip="Adicionar convidado" (click)="openModalAddConvidado()">
+            <i class='bx bxs-user-plus'></i>
+        </button>
+        <div class="wrap-agents">
+            <ng-container *ngFor="let a of (dados$ | async)?.agents; let i = index">
+                <div class="agent" [ngClass]="{
+                    'yellow' : initTimeButtons && 
+                        (dados$ | async)?.timerAgent === true && 
+                        (dados$ | async)?.agentIdCurrentTime === a.ID,
+                        'blue' : (dados$ | async)?.agentsIdAlreadyTalked?.indexOf(a.ID) !== -1
+                    }">
+                    <div class="agent-left">
+                        <img [src]="a.photo">
+                        <div class="texts">
+                            <p>{{a.name}} </p>
+                            <p>{{a.party.party}}</p>
+                        </div>
+                    </div>
+                    <button 
+                    *ngIf="!initTimeButtons" class="btn" (click)="removeAgent(a.ID)">
+                    <i class='bx bx-minus-circle'></i>
+                </button>
+                </div>
+                <div *ngIf="(dados$ | async)?.status === 'inscricao_parada' && 
+                ((dados$ | async)?.agentIdCurrentTime === null || (dados$ | async)?.agentIdCurrentTime.length === 0) || (dados$ | async)?.agentIdCurrentTime === a.ID" class="wrap-actions-timer">
+                    <button class="btn blue" (click)="initTime(0, a.ID)">0</button>
+                    <ng-container *ngFor="let t of timerOptions[0]?.minutos">
+                        <button class="btn" (click)="initTime(t.value, a.ID)" [disabled]="valueButtonClicked === t.value && (dados$ | async)?.agentIdCurrentTime === a.ID">
+                            {{t.value}}
+                        </button>
+                    </ng-container>
+                    
+                    <button class="btn blue" (click)="initTime(timerOptions[0]?.tempoTotal, a.ID)" [disabled]="valueButtonClicked === timerOptions[0]?.tempoTotal && (dados$ | async)?.agentIdCurrentTime === a.ID">
+                        {{timerOptions[0]?.tempoTotal}}
+                    </button>
+                </div>
+                <div class="wrap-init-time" 
+                *ngIf="initTimeButtons && (dados$ | async)?.timerAgent === true && (dados$ | async)?.agentIdCurrentTime === a.ID">
+                    <p><app-global-timer></app-global-timer></p>
+                    <div class="actions">
+                        <button *ngIf="valueButtonClicked !== 0" class="btn" (click)="incrementTime(1)">+1</button>
+                        <button class="btn blue" (click)="pause()">
+                            <i class='bx' [ngClass]="pauseTime ? 'bx-play' : 'bx-pause'"></i>
+                        </button>
+                        <button class="btn red" (click)="resetTime()"><i class='bx bx-x'></i></button>
+                    </div>
+                </div>
+            </ng-container>
+           
+        </div>
+    </div>
+</div>
+

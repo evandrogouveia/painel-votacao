@@ -1,0 +1,104 @@
+.header-controle{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    background-color: #f5f5f5;
+    box-shadow: 1px 1px 6px 1px rgba(0,0,0,0.2);
+    gap: 10px;
+   
+    .nav-link{
+        border: 1px solid #ccc;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        &:nth-child(1){
+            border: 1px solid #0191d4;
+           
+            &.active{
+                background-color: #0191d420;
+            }
+        }
+        &:nth-child(2){
+            border: 1px solid #9101d4;
+            &.active{
+                background-color: #9101d420;
+            }
+        }
+        &:nth-child(3){
+            border: 1px solid #01d483;
+            &.active{
+                background-color: #01d48320;
+            }
+        }
+        &:nth-child(4){
+            border: 1px solid #d49101;
+            &.active{
+                background-color: #d4910120;
+            }
+        }
+        i{
+            color: #bbb;
+            font-size: 25px;
+            &.bx-detail{
+                color: #0191d4;
+            }
+            &.bx-microphone{
+                color: #9101d4;
+            }
+            &.bx-user-pin{
+                color: #01d483;
+            }
+            &.bx-cog{
+                color: #d49101;
+            }
+        }
+        
+    }
+}
+.current-route{
+    font-weight: 500;
+    color: #656565;
+    margin-bottom: 30px;
+    padding: 8px 40px;
+    background-color: #005079;
+    color: #f9f9f9;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+    .wrap-route{
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        i{
+            font-size: 25px;
+        }
+    }
+    .btn.btn-logout{
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        color: #ffffff;
+        outline: none;
+        box-shadow: none;
+        border: none;
+        &:active, &:focus{
+            outline: none;
+            box-shadow: none;
+            border: none;
+        }
+        span{
+            font-size: 13px;
+        }
+        i{
+            font-size: 18px;
+        }
+        
+    }
+   
+}
