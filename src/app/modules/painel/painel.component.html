@@ -155,7 +155,7 @@
                                    <p>{{n.party.party}}</p>
                                </div>
                            </div>
-                           <div class="data-right-timer" [ngClass]="(dados$ | async)?.startNegative == true ? 'red' : 'green'">
+                           <div class="data-right-timer" [ngClass]="(type$ | async) === 'minus' ? 'red' : 'green'">
                                <app-global-timer></app-global-timer>
                            </div>
                    </div>

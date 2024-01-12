@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Observable, of } from 'rxjs';
 import { SocketService } from '../../socket/socket.service';
-import { GlobalTimerService } from '../../global-timer/services/global-timer.service';
 import { ModalComponent } from '../../shared/modal/modal.component';
 
 @Component({
@@ -29,8 +28,7 @@ export class ExpedienteComponent {
 
   constructor(
     private modalService: BsModalService,
-    private socketService: SocketService,
-    private globalTimerService: GlobalTimerService
+    private socketService: SocketService
   ) { }
 
   ngOnInit(): void {
@@ -86,7 +84,6 @@ export class ExpedienteComponent {
         startNegative: false,
         agents: [],
       });
-      //this.globalTimerService.startTimePlus();
     } else {
       this.inscricaoParada = true;
       this.socketService.sendInscricao({
@@ -98,7 +95,6 @@ export class ExpedienteComponent {
         startNegative: false,
         agents: JSON.parse(inscricaoStorage).agents
       });
-      this.globalTimerService.resetTime();
     }
   }
 
@@ -200,7 +196,6 @@ export class ExpedienteComponent {
       agents: []
     });
     this.socketService.sendStandby(true);
-    this.globalTimerService.resetTime();
     localStorage.removeItem('agentIDAlreadyTalked');
   }
 

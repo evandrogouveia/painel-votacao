@@ -15,6 +15,7 @@ export class PainelComponent {
   dadosHeader: any = [];
   dados$: Observable<any> = of(null);
   statusModal$: Observable<any> = of(null);
+  type$: Observable<any> = of();
 
   qtdSim = 0;
   qtdAbs = 0;
@@ -31,6 +32,7 @@ export class PainelComponent {
   }
 
   ngOnInit(): void {
+    this.getDadosTimer();
     this.getDadosGerais();
     this.recebeDados();
     this.recebeDadosInscricao();
@@ -42,6 +44,14 @@ export class PainelComponent {
     setInterval(() => {
       this.currentTime = new Date().toString().split(' ')[4];
     }, 1);
+  }
+
+  getDadosTimer() {
+    this.socketService.recebeDadosTimer().subscribe(res => {
+      if (res) {
+        this.type$ = of(res?.type);
+      }
+    });
   }
 
   getDadosGerais() {

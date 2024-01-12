@@ -25,6 +25,7 @@ export class GlobalTimerComponent implements AfterViewInit {
   getDadosService() {
     this.socketService.recebeDadosTimer().subscribe(res => {
       if (res) {
+        console.log(res)
         this.type$ = of(res?.type);
         this.minutos$ = of(res?.minutos);
         this.segundos$ = of(res?.segundos);
