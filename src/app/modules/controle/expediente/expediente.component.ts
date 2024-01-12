@@ -105,7 +105,6 @@ export class ExpedienteComponent {
   initTime(value: any, agentID: any) {
     this.valueButtonClicked = value;
     this.initTimeButtons = true;
-    this.globalTimerService.iniciarContagem(value);
     //value === 0 ? this.globalTimerService.startTimePlus() : this.globalTimerService.startTimeMinus(value);
     localStorage.setItem('botaoClicado', this.valueButtonClicked);
     const inscricaoStorage: any = localStorage.getItem('inscricao');
@@ -123,16 +122,34 @@ export class ExpedienteComponent {
       startNegative: false,
       agents: JSON.parse(inscricaoStorage).agents
     });
+
+    this.socketService.sendTimer({
+      status: 'start',
+      minutes: value
+    });
   }
 
   incrementTime(value: any) {
-    this.globalTimerService.getTimeStorage(value)
+    this.socketService.sendTimer({
+      status: 'increment',
+      minutes: value
+    });
   }
 
   pause() {
-    this.globalTimerService.pauseTime(this.valueButtonClicked).subscribe(res => {
-      this.pauseTime = res;
-    })
+    this.pauseTime = !this.pauseTime;
+    if (this.pauseTime) {
+      this.socketService.sendTimer({
+        status: 'pause',
+        minutes: null
+      });
+    } else {
+      this.socketService.sendTimer({
+        status: 'resume',
+        minutes: null
+      });
+    }
+    
   }
 
   resetTime() {
@@ -149,7 +166,11 @@ export class ExpedienteComponent {
       startNegative: false,
       agents: JSON.parse(inscricaoStorage).agents
     });
-    this.globalTimerService.resetTime();
+   
+    this.socketService.sendTimer({
+      status: 'reset',
+      minutes: null
+    });
   }
 
   removeAgent(agentID: any) {

@@ -51,7 +51,7 @@ export class SocketService {
 
     this.socket.on('timer', (dados: any) => {
       this.subjTimer.next(dados);
-      localStorage.setItem(`timer`, JSON.stringify(dados));
+      //localStorage.setItem(`timer`, JSON.stringify(dados));
     });
 
     this.socket.on('quorum', (dados: any) => {
@@ -96,9 +96,7 @@ export class SocketService {
   }
 
   sendTimer(dados: any) {
-    if (dados) {
-      this.socket.emit('timer', dados)
-    }
+      this.socket.emit('timer', dados);
   }
 
   sendQuorum(dados: any) {

@@ -18,7 +18,6 @@ export class GlobalTimerService {
   contador: any;
 
   constructor(private socketService: SocketService) {
-    this.getTimeStorage();
   }
 
   getTimeStorage(incrementValue?: any) {
@@ -29,81 +28,11 @@ export class GlobalTimerService {
       if (incrementValue) {
         clearInterval(this.contador);
         let sumMinutes = (parseInt(time.minutos) + incrementValue);
-        this.contagemStorage(this.pad(sumMinutes), time.segundos);
-      } else {
-        this.contagemStorage(time.minutos, time.segundos);
-      }
+
+      } 
     }
   }
 
-
-  iniciarContagem(minutos: any) {
-    this.resetTime();
-
-    this.segundos = minutos * 60;
-  
-    let contagemRegressiva = true;
-  
-    this.contador = setInterval(() => {
-      const minutosRestantes = Math.floor(this.segundos / 60);
-      const segundosRestantes = this.segundos % 60;
-
-      if (contagemRegressiva) {
-        this.socketService.sendTimer({
-          minutos: this.pad(minutosRestantes), segundos: this.pad(segundosRestantes), type: 'minus'
-        });
-      } else {
-        this.socketService.sendTimer({
-          minutos: this.pad(minutosRestantes), segundos: this.pad(segundosRestantes), type: 'plus'
-        });
-      }
-
-      if (this.segundos === 0) {
-        if (contagemRegressiva) {
-          contagemRegressiva = false;
-        } else {
-          clearInterval(this.contador);
-        }
-      }
-
-      this.segundos += contagemRegressiva ? -1 : 1;
-
-    }, 1000);
-  }
-
-  contagemStorage(minutos: any, segundos?: any) {
-   
-    this.segundos = segundos;
-  
-    let contagemRegressiva = true;
-  
-    this.contador = setInterval(() => {
-  
-      const segundosRestantes = this.segundos % 60;
-
-      if (contagemRegressiva) {
-        this.socketService.sendTimer({
-          minutos: minutos, segundos: this.pad(segundosRestantes), type: 'minus'
-        });
-      } else {
-        this.socketService.sendTimer({
-          minutos: minutos, segundos: this.pad(segundosRestantes), type: 'plus'
-        });
-      }
-
-      if (this.segundos === 0) {
-        if (contagemRegressiva) {
-          contagemRegressiva = false;
-        } else {
-          clearInterval(this.contador);
-        }
-      }
-
-      this.segundos += contagemRegressiva ? -1 : 1;
-
-    }, 1000);
-
-  }
 
   pauseTime(valueButton: any): Observable<any> {
     this.pauseTimer = !this.pauseTimer;
